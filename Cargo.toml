@@ -1,0 +1,14 @@
+[workspace]
+members = [
+    "waves",
+    "single-thread-executor",
+]
+default-members = [
+    "waves",
+    "single-thread-executor",
+]
+
+[profile.release]
+debug = true
+opt-level = "s"
+lto = true
