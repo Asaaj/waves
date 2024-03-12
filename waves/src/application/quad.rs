@@ -1,7 +1,4 @@
-
-use web_sys::WebGl2RenderingContext;
-
-use crate::application::shaders::{load_shaders, ShaderContext};
+use crate::application::shaders::ShaderContext;
 use crate::application::vertex::{BasicMesh, Vertex};
 use crate::render_core::animation_params::AnimationParams;
 use crate::render_core::frame_sequencer::FrameGate;
@@ -22,9 +19,9 @@ pub fn generate_drawable_quad(shader_context: ShaderContext) -> Vec<(BasicMesh, 
 fn generate_mesh() -> Vec<BasicMesh> {
 	let mut mesh = BasicMesh::with_capacities(4, 6);
 
-	mesh.push_vertex(Vertex::from_vecs_2d(nglm::vec2(0.0, 0.0), nglm::vec4(1.0, 0.0, 0.0, 1.0)));
-	mesh.push_vertex(Vertex::from_vecs_2d(nglm::vec2(0.0, 1.0), nglm::vec4(0.0, 1.0, 0.0, 1.0)));
-	mesh.push_vertex(Vertex::from_vecs_2d(nglm::vec2(1.0, 0.0), nglm::vec4(0.0, 0.0, 1.0, 1.0)));
+	mesh.push_vertex(Vertex::from_vecs_2d(nglm::vec2(-1.0, -1.0), nglm::vec4(1.0, 0.0, 0.0, 1.0)));
+	mesh.push_vertex(Vertex::from_vecs_2d(nglm::vec2(-1.0, 1.0), nglm::vec4(0.0, 1.0, 0.0, 1.0)));
+	mesh.push_vertex(Vertex::from_vecs_2d(nglm::vec2(1.0, -1.0), nglm::vec4(0.0, 0.0, 1.0, 1.0)));
 	mesh.push_vertex(Vertex::from_vecs_2d(nglm::vec2(1.0, 1.0), nglm::vec4(1.0, 1.0, 0.0, 1.0)));
 
 	mesh.push_index(2);
@@ -37,11 +34,7 @@ fn generate_mesh() -> Vec<BasicMesh> {
 	vec![mesh]
 }
 
-pub async fn draw(gate: FrameGate<AnimationParams>, context: WebGl2RenderingContext) {
-	let shader = load_shaders(&context).expect("Failed to load shaders");
-
-	shader.use_shader();
-
+pub async fn draw(gate: FrameGate<AnimationParams>, shader: ShaderContext) {
 	let meshes_and_buffers = generate_drawable_quad(shader.clone());
 
 	loop {
@@ -49,9 +42,7 @@ pub async fn draw(gate: FrameGate<AnimationParams>, context: WebGl2RenderingCont
 
 		clear_frame(params.viewport.context());
 
-		let width = params.viewport.width() as i32;
-		let height = params.viewport.height() as i32;
-
+		shader.use_shader();
 		draw_meshes_always(params.viewport.context(), &meshes_and_buffers, DrawMode::Surface);
 	}
 }

@@ -4,6 +4,8 @@ use crate::render_core::camera::Camera;
 use crate::render_core::mesh::{ToMesh, VertexAttribute};
 use crate::utils::prelude::*;
 
+// TODO: Supply in `render_core`, and make simpler `vertex2d`, etc
+
 #[repr(C, packed)]
 #[derive(Clone, Copy)]
 pub struct Vertex {

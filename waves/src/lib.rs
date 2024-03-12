@@ -17,7 +17,6 @@ mod application;
 mod render_core;
 mod request_data;
 
-
 #[wasm_bindgen(module = "/www/overlay.js")]
 extern "C" {
 	fn remove_overlay();
