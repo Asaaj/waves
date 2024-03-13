@@ -138,12 +138,12 @@ fn is_match_commented(_regex_match: regex::Match, _full_source: &str) -> bool {
 
 #[cfg(test)]
 mod tests {
-	
 
 	// #[test]
 	// fn basic() {
-	// 	let result = preprocess_shader(include_str!("../application/shaders/data_sphere.vert"));
-	// 	println!("{}", result);
+	// 	let result =
+	// preprocess_shader(include_str!("../application/shaders/data_sphere.vert"
+	// )); 	println!("{}", result);
 	// }
 	//
 	// #[test]

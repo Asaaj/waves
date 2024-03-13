@@ -5,6 +5,8 @@ precision mediump float;
 #define M_PI 3.1415926535898
 #define M_TAU 2.0 * M_PI
 
+#define M_NUM_OSCILLATORS 2
+
 in vec2 fragPosition;
 in vec4 fragColor;
 
@@ -16,7 +18,7 @@ uniform vec2 u_phase;
 
 out vec4 outColor;
 
-float amplitude_at(float distance, float wavelength, float phase) {
+float strength_at(float distance, float wavelength, float phase) {
     return sin(M_TAU * distance / wavelength - phase);
 }
 
@@ -32,13 +34,12 @@ void main() {
     vec2 frag_pos = fragPosition;
     vec2 distance = vec2(length(frag_pos - u_oscillatorLocation[0]), length(frag_pos - u_oscillatorLocation[1]));
 
-    vec2 amplitude = vec2(
-        amplitude_at(distance.x, u_wavelength, u_phase.x),
-        amplitude_at(distance.y, u_wavelength, u_phase.y)
+    vec2 strength = vec2(
+        strength_at(distance.x, u_wavelength, u_phase.x),
+        strength_at(distance.y, u_wavelength, u_phase.y)
     );
-    float interference = amplitude.x + amplitude.y;
+    float total_interference = strength.x + strength.y;
 
-//    vec4 full_color = vec4(to01(amplitude), 0.0, to01(interference / 2.0));
-    vec4 full_color = vec4(to01(amplitude), to01(interference / 2.0), 1.0);
+    vec4 full_color = vec4(to01(strength), to01(total_interference / float(M_NUM_OSCILLATORS)), 1.0);
     outColor = full_color * vec4(0.2, 0.2, 1.0, 1.0);
 }

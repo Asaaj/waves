@@ -199,7 +199,6 @@ mod tests {
 	use wasm_bindgen_test::*;
 
 	use crate::application::vertex::{BasicMesh, Vertex};
-	
 	use crate::utils::prelude::*;
 
 	#[wasm_bindgen_test]

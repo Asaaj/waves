@@ -58,7 +58,7 @@ pub async fn draw_indirect(
 	let clear_color = nglm::vec4(0.0, 0.0, 0.0, 1.0);
 	let meshes_and_buffers = generate_drawable_quad(render_shader.clone());
 
-	let mut texture_dimensions = nglm::vec2(300.0, 300.0);
+	let mut texture_dimensions = nglm::vec2(300u32, 300u32);
 	let texture_index = 0;
 	let texture_target = WebGl2RenderingContext::TEXTURE0 + texture_index as u32;
 	let color_attachment = WebGl2RenderingContext::COLOR_ATTACHMENT0 + 0u32;
@@ -80,6 +80,8 @@ pub async fn draw_indirect(
 		let context = params.viewport.context();
 
 		let current_dimensions = params.viewport.dimensions();
+		let current_dimensions =
+			nglm::vec2(current_dimensions.x as u32, current_dimensions.y as u32);
 		if current_dimensions != texture_dimensions {
 			waves_log!(
 				"Resizing texture: {} x {} -> {} x {}",

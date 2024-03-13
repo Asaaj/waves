@@ -1,4 +1,4 @@
-use std::f32::consts::{TAU};
+use std::f32::consts::TAU;
 
 use nglm::Vec2;
 

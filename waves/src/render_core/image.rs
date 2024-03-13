@@ -5,6 +5,8 @@ use image::{
 use wasm_bindgen::JsValue;
 use web_sys::WebGl2RenderingContext;
 
+use crate::render_core::texture;
+
 /// This feels like it probably duplicates something that can be done in the
 /// image library already.
 pub trait LoadableImageType {
@@ -104,7 +106,7 @@ pub fn load_into_texture_with_filters<T: LoadableImageType>(
 	let info = reader.next_frame(&mut buf).map_err(|s| s.to_string())?;
 	let bytes = &buf[..info.buffer_size()];
 
-	let dimensions = (info.width, info.height);
+	let dimensions = nglm::vec2(info.width, info.height);
 
 	// TODO: Probably slower, but worth profiling:
 	// let dyn_img = image::load_from_memory_with_format(png_bytes,
@@ -115,43 +117,12 @@ pub fn load_into_texture_with_filters<T: LoadableImageType>(
 	// .ok_or(format!("Image was not stored with type {name}"));
 	// let dimensions = concrete_image.dimensions();
 
-	let texture = context.create_texture().ok_or("no texture")?;
-
-	context.active_texture(texture_number);
-	context.bind_texture(WebGl2RenderingContext::TEXTURE_2D, Some(&texture));
-
-	context.tex_parameteri(
-		WebGl2RenderingContext::TEXTURE_2D,
-		WebGl2RenderingContext::TEXTURE_MIN_FILTER,
-		min_filter as i32,
-	);
-	context.tex_parameteri(
-		WebGl2RenderingContext::TEXTURE_2D,
-		WebGl2RenderingContext::TEXTURE_MAG_FILTER,
-		mag_filter as i32,
-	);
-
-	context.tex_parameteri(
-		WebGl2RenderingContext::TEXTURE_2D,
-		WebGl2RenderingContext::TEXTURE_WRAP_S,
-		WebGl2RenderingContext::CLAMP_TO_EDGE as i32,
-	);
-	context.tex_parameteri(
-		WebGl2RenderingContext::TEXTURE_2D,
-		WebGl2RenderingContext::TEXTURE_WRAP_T,
-		WebGl2RenderingContext::CLAMP_TO_EDGE as i32,
-	);
-
-	// Lol. This should just be a builder.
-	context.tex_image_2d_with_i32_and_i32_and_i32_and_format_and_type_and_opt_u8_array(
-		WebGl2RenderingContext::TEXTURE_2D,
-		0,
-		T::texture_internal_format() as i32,
-		dimensions.0 as i32,
-		dimensions.1 as i32,
-		0,
-		T::texture_format(),
-		T::texture_type(),
+	texture::generate_and_bind_texture::<T>(
+		context,
+		texture_number,
+		min_filter,
+		mag_filter,
+		dimensions,
 		Some(bytes),
 	)?;
 
