@@ -40,5 +40,5 @@ void main() {
 
 //    vec4 full_color = vec4(to01(amplitude), 0.0, to01(interference / 2.0));
     vec4 full_color = vec4(to01(amplitude), to01(interference / 2.0), 1.0);
-    outColor = full_color * vec4(0.4, 0.4, 1.0, 1.0);
+    outColor = full_color * vec4(0.2, 0.2, 1.0, 1.0);
 }

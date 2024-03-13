@@ -47,4 +47,6 @@ impl Viewport {
 	pub fn width(&self) -> f32 { self.width.borrow().clone() }
 
 	pub fn height(&self) -> f32 { self.height.borrow().clone() }
+
+	pub fn dimensions(&self) -> nglm::Vec2 { nglm::vec2(self.width(), self.height()) }
 }

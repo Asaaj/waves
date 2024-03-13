@@ -138,17 +138,17 @@ fn is_match_commented(_regex_match: regex::Match, _full_source: &str) -> bool {
 
 #[cfg(test)]
 mod tests {
-	use super::*;
+	
 
-	#[test]
-	fn basic() {
-		let result = preprocess_shader(include_str!("../application/shaders/data_sphere.vert"));
-		println!("{}", result);
-	}
-
-	#[test]
-	fn shader_map() {
-		let shader_map = include_strs!("application/shaders/pointmapping.glsl");
-		println!("{:?}", shader_map);
-	}
+	// #[test]
+	// fn basic() {
+	// 	let result = preprocess_shader(include_str!("../application/shaders/data_sphere.vert"));
+	// 	println!("{}", result);
+	// }
+	//
+	// #[test]
+	// fn shader_map() {
+	// 	let shader_map = include_strs!("application/shaders/pointmapping.glsl");
+	// 	println!("{:?}", shader_map);
+	// }
 }

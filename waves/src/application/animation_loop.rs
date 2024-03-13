@@ -4,7 +4,7 @@ use single_thread_executor::new_executor_and_spawner;
 use wasm_bindgen_futures::spawn_local;
 use web_sys::{HtmlCanvasElement, WebGl2RenderingContext};
 
-use crate::application::shaders::load_shaders;
+use crate::application::shaders::{load_render_texture_shaders, load_simulation_shaders};
 use crate::application::{quad, simulate};
 use crate::render_core::animation::{wrap_animation_body, AnimationFn};
 use crate::render_core::animation_params::AnimationParams;
@@ -21,20 +21,24 @@ pub fn get_animation_loop(
 	});
 
 	let frame_sequencer = Rc::new(FrameSequencer::<AnimationParams>::new());
-	let shader = load_shaders(&context).expect("Failed to load shaders");
+	let simulation_shader =
+		load_simulation_shaders(&context).expect("Failed to load simulation shaders");
+	let render_texture_shader =
+		load_render_texture_shaders(&context).expect("Failed to load render shaders");
 
 	let (sender, receiver) = async_channel::unbounded::<u64>();
-
-	spawner.spawn(quad::draw(
-		FrameGate::new(frame_sequencer.clone(), "Draw Quad".to_owned()),
-		receiver,
-		shader.clone(),
-	));
 
 	spawner.spawn(simulate::waves(
 		FrameGate::new(frame_sequencer.clone(), "Simulate Waves".to_owned()),
 		sender,
-		shader.clone(),
+		simulation_shader.clone(),
+	));
+
+	spawner.spawn(quad::draw_indirect(
+		FrameGate::new(frame_sequencer.clone(), "Draw Quad".to_owned()),
+		receiver,
+		simulation_shader.clone(),
+		render_texture_shader,
 	));
 
 	let frame_marker = FrameMarker::new(frame_sequencer.clone());

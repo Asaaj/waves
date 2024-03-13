@@ -3,8 +3,6 @@ use std::ops::DerefMut;
 use std::rc::Rc;
 use std::time::Duration;
 
-use wasm_bindgen::JsCast;
-
 use crate::render_core::animation_params::AnimationParams;
 use crate::utils::prelude::*;
 use crate::Viewport;

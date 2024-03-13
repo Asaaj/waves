@@ -1,5 +1,3 @@
-use std::convert::TryInto;
-
 use wasm_bindgen::JsValue;
 use web_sys::{WebGl2RenderingContext, WebGlBuffer, WebGlVertexArrayObject};
 
@@ -191,22 +189,3 @@ fn draw_buffers(context: &WebGl2RenderingContext, buffers: &DrawBuffers, draw_mo
 		0,
 	);
 }
-
-// pub fn draw_buffers(context: &WebGl2RenderingContext, buffers:
-// &Vec<DrawBuffers>, draw_mode: DrawMode) {     buffers.iter()
-//         .for_each(|b| {
-//             context.bind_buffer(WebGl2RenderingContext::ARRAY_BUFFER,
-// Some(&b.vertex_buffer));
-// context.bind_vertex_array(Some(&b.vertex_array_object));
-//
-//             let mode: u32 = match draw_mode {
-//                 DrawMode::Surface => WebGl2RenderingContext::TRIANGLES,
-//                 DrawMode::Wireframe => WebGl2RenderingContext::LINE_STRIP,
-//             };
-//             context.bind_buffer(WebGl2RenderingContext::ELEMENT_ARRAY_BUFFER,
-// Some(&b.index_buffer));             context.draw_elements_with_i32(mode,
-//                                            b.num_indices.try_into().unwrap(),
-//
-// WebGl2RenderingContext::UNSIGNED_INT,
-// 0);         });
-// }

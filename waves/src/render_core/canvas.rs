@@ -1,5 +1,4 @@
 use utils::prelude::*;
-use wasm_bindgen::JsCast;
 use web_sys::{HtmlCanvasElement, WebGl2RenderingContext};
 
 use crate::utils;

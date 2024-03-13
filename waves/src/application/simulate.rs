@@ -1,4 +1,4 @@
-use std::f32::consts::{PI, TAU};
+use std::f32::consts::{TAU};
 
 use nglm::Vec2;
 
@@ -6,11 +6,12 @@ use crate::application::shaders::ShaderContext;
 use crate::render_core::animation_params::AnimationParams;
 use crate::render_core::frame_sequencer::FrameGate;
 use crate::render_core::uniform;
-use crate::utils::prelude::*;
 
-pub async fn waves(gate: FrameGate<AnimationParams>,
-				   frame_sender: async_channel::Sender<u64>,
-				   shader: ShaderContext) {
+pub async fn waves(
+	gate: FrameGate<AnimationParams>,
+	frame_sender: async_channel::Sender<u64>,
+	shader: ShaderContext,
+) {
 	let mut phase = 0.0f32;
 	let wavelength = 0.1f32;
 	let phase_step_per_sec = TAU; // One full period
