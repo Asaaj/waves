@@ -23,13 +23,17 @@ pub fn get_animation_loop(
 	let frame_sequencer = Rc::new(FrameSequencer::<AnimationParams>::new());
 	let shader = load_shaders(&context).expect("Failed to load shaders");
 
+	let (sender, receiver) = async_channel::unbounded::<u64>();
+
 	spawner.spawn(quad::draw(
 		FrameGate::new(frame_sequencer.clone(), "Draw Quad".to_owned()),
+		receiver,
 		shader.clone(),
 	));
 
 	spawner.spawn(simulate::waves(
 		FrameGate::new(frame_sequencer.clone(), "Simulate Waves".to_owned()),
+		sender,
 		shader.clone(),
 	));
 

@@ -28,6 +28,7 @@ pub fn run_animation_loop(viewport: Viewport, mut animation_body: AnimationFn) {
 	let performance = window().performance().expect("performance should be available");
 
 	let last_frame_time = RefCell::new(performance.now());
+	let mut frame_number = 0;
 
 	*start_frame.borrow_mut() = Some(Closure::wrap(Box::new(move || {
 		let this_frame_time = performance.now();
@@ -39,8 +40,10 @@ pub fn run_animation_loop(viewport: Viewport, mut animation_body: AnimationFn) {
 		animation_body.deref_mut()(AnimationParams {
 			viewport: viewport.clone(),
 			delta_time: duration,
+			frame_number,
 		});
 		request_animation_frame(next_frame.borrow().as_ref().unwrap());
+		frame_number += 1;
 	}) as Box<dyn FnMut()>));
 
 	request_animation_frame(start_frame.borrow().as_ref().unwrap());

@@ -14,6 +14,8 @@ default = ["console_error_panic_hook"]
 [dependencies]
 single-thread-executor = { path = "../single-thread-executor", version = "0.1.0" }
 
+async-channel = "2.2"
+async-std = "1.12"
 js-sys = "0.3.57"
 memoffset = "0.9.0"
 nalgebra-glm = "0.18.0"

@@ -8,7 +8,9 @@ use crate::render_core::frame_sequencer::FrameGate;
 use crate::render_core::uniform;
 use crate::utils::prelude::*;
 
-pub async fn waves(gate: FrameGate<AnimationParams>, shader: ShaderContext) {
+pub async fn waves(gate: FrameGate<AnimationParams>,
+				   frame_sender: async_channel::Sender<u64>,
+				   shader: ShaderContext) {
 	let mut phase = 0.0f32;
 	let wavelength = 0.1f32;
 	let phase_step_per_sec = TAU; // One full period
@@ -38,5 +40,7 @@ pub async fn waves(gate: FrameGate<AnimationParams>, shader: ShaderContext) {
 			phase -= TAU;
 		}
 		u_phase.smart_write(Vec2::repeat(phase));
+
+		frame_sender.send(params.frame_number).await.expect("Failed to send frame number");
 	}
 }
