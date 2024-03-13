@@ -145,8 +145,8 @@ pub enum DrawMode {
 	Points,
 }
 
-pub fn clear_frame(context: &WebGl2RenderingContext) {
-	context.clear_color(0.45, 0.67, 0.93, 1.0);
+pub fn clear_frame(context: &WebGl2RenderingContext, color: nglm::Vec4) {
+	context.clear_color(color.x, color.y, color.z, color.w);
 	context
 		.clear(WebGl2RenderingContext::COLOR_BUFFER_BIT | WebGl2RenderingContext::DEPTH_BUFFER_BIT);
 }

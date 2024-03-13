@@ -6,7 +6,7 @@
     --box-shadow: 2px 2px 10px var(--black);
     --fade-out: 500ms;
     color: var(--black);
-    background: var(--sky);
+    background: var(--black);
     border-radius: 0.1em;
 }
 
