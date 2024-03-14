@@ -5,7 +5,7 @@ use wasm_bindgen_futures::spawn_local;
 use web_sys::{HtmlCanvasElement, WebGl2RenderingContext};
 
 use crate::application::shaders::{load_render_texture_shaders, load_simulation_shaders};
-use crate::application::{quad, simulate};
+use crate::application::{pipeline, simulate};
 use crate::render_core::animation::{wrap_animation_body, AnimationFn};
 use crate::render_core::animation_params::AnimationParams;
 use crate::render_core::frame_sequencer::{FrameGate, FrameMarker, FrameSequencer};
@@ -34,7 +34,7 @@ pub fn get_animation_loop(
 		simulation_shader.clone(),
 	));
 
-	spawner.spawn(quad::draw_indirect(
+	spawner.spawn(pipeline::draw_indirect(
 		FrameGate::new(frame_sequencer.clone(), "Draw Quad".to_owned()),
 		receiver,
 		simulation_shader.clone(),

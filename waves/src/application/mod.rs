@@ -3,3 +3,4 @@ pub mod quad;
 pub mod shaders;
 mod simulate;
 pub mod vertex;
+mod pipeline;
