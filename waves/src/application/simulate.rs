@@ -14,14 +14,16 @@ pub async fn waves(
 ) {
 	let mut phase = 0.0f32;
 	let wavelength = 0.1f32;
-	let phase_step_per_sec = TAU; // One full period
+	let phase_step_per_sec = TAU;
 
 	shader.use_shader();
 
+	let location1 = nglm::vec2(0.48, 0.48);
+	let location2 = nglm::vec2(-0.48, -0.48);
 	let _u_oscillator_location = uniform::init_smart_mat2(
 		"u_oscillatorLocation",
 		&shader,
-		nglm::mat2x2(0.5, -0.5, 0.5, -0.5),
+		nglm::Mat2::from_columns(&[location1, location2]),
 	);
 	let _u_wavelength = uniform::init_smart_f32("u_wavelength", &shader, wavelength);
 

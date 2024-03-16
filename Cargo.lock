@@ -2258,6 +2258,7 @@ dependencies = [
  "console_error_panic_hook",
  "image 0.25.0",
  "image-base64-wasm",
+ "itertools 0.12.1",
  "js-sys",
  "memoffset",
  "nalgebra-glm",

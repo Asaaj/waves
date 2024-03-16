@@ -1,9 +1,47 @@
+use std::marker::PhantomData;
+
 use wasm_bindgen::JsValue;
 use web_sys::{WebGl2RenderingContext, WebGlFramebuffer, WebGlTexture};
 
 use crate::render_core::image::LoadableImageType;
 
-pub fn create_render_target<T: LoadableImageType>(
+pub struct RenderTarget<T: LoadableImageType> {
+	pub framebuffer: WebGlFramebuffer,
+	pub texture: WebGlTexture,
+	texture_target_index: u32,
+	color_attachment_index: u32,
+	_phantom_image_type: PhantomData<T>,
+}
+
+impl<T: LoadableImageType> RenderTarget<T> {
+	pub fn new(
+		context: WebGl2RenderingContext,
+		texture_target_index: u32,
+		color_attachment_index: u32,
+		dimensions: nglm::U32Vec2,
+	) -> Result<Self, JsValue> {
+		let texture_target = WebGl2RenderingContext::TEXTURE0 + texture_target_index;
+		let color_attachment = WebGl2RenderingContext::COLOR_ATTACHMENT0 + color_attachment_index;
+		let (framebuffer, texture) =
+			create_render_target::<T>(context, texture_target, color_attachment, dimensions)?;
+
+		Ok(Self {
+			framebuffer,
+			texture,
+			texture_target_index,
+			color_attachment_index,
+			_phantom_image_type: Default::default(),
+		})
+	}
+
+	pub fn texture_index(&self) -> u32 { self.texture_target_index }
+
+	pub fn texture_target(&self) -> u32 {
+		WebGl2RenderingContext::TEXTURE0 + self.texture_target_index
+	}
+}
+
+fn create_render_target<T: LoadableImageType>(
 	context: WebGl2RenderingContext,
 	texture_target: u32,
 	color_attachment: u32,
@@ -95,12 +133,24 @@ pub fn regenerate_texture<T: LoadableImageType>(
 	Ok(())
 }
 
-fn generate_and_bind_framebuffer(
+pub fn generate_and_bind_framebuffer(
 	context: WebGl2RenderingContext,
 	attachment: u32,
 	texture: &WebGlTexture,
 ) -> Result<WebGlFramebuffer, JsValue> {
 	let framebuffer = context.create_framebuffer().ok_or("Failed to create framebuffer")?;
+
+	bind_texture_to_framebuffer(context, attachment, &framebuffer, texture);
+
+	Ok(framebuffer)
+}
+
+pub fn bind_texture_to_framebuffer(
+	context: WebGl2RenderingContext,
+	attachment: u32,
+	framebuffer: &WebGlFramebuffer,
+	texture: &WebGlTexture,
+) {
 	context.bind_framebuffer(WebGl2RenderingContext::FRAMEBUFFER, Some(&framebuffer));
 
 	context.framebuffer_texture_2d(
@@ -110,6 +160,4 @@ fn generate_and_bind_framebuffer(
 		Some(texture),
 		0,
 	);
-
-	Ok(framebuffer)
 }

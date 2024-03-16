@@ -1,9 +1,6 @@
-
 use crate::application::shaders::ShaderContext;
 use crate::application::vertex::{BasicMesh, Vertex};
-use crate::render_core::mesh::{
-	add_mesh, DrawBuffers, MeshMode,
-};
+use crate::render_core::mesh::{add_mesh, DrawBuffers, MeshMode};
 #[allow(unused_imports)]
 use crate::utils::prelude::*;
 

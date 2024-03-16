@@ -5,6 +5,7 @@ pub mod canvas;
 pub mod frame_sequencer;
 pub mod image;
 pub mod mesh;
+pub mod ping_pong_buffer;
 pub mod shader;
 pub mod texture;
 pub mod uniform;

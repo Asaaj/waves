@@ -41,5 +41,5 @@ void main() {
     float total_interference = strength.x + strength.y;
 
     vec4 full_color = vec4(to01(strength), to01(total_interference / float(M_NUM_OSCILLATORS)), 1.0);
-    outColor = full_color * vec4(0.2, 0.2, 1.0, 1.0);
+    outColor = full_color * vec4(1.0, 1.0, 1.0, 1.0);
 }
